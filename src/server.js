@@ -1,6 +1,14 @@
 const app = require('./app');
+const sequelize = require('./models');
 
-// não remova a variável `API_PORT` ou o `listen`
 const port = process.env.API_PORT || 3001;
 
-app.listen(port, () => console.log('ouvindo porta', port));
+app.listen(port, async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+    console.log(`App listening on port ${port}`);
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+});
