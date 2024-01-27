@@ -1,5 +1,5 @@
 const { createToken } = require('../utils/auth');
-const { bodySchema } = require('./validations/login.schema');
+const { bodySchema } = require('./validations/schemas/login.schema');
 const { User } = require('../models');
 
 /* 
