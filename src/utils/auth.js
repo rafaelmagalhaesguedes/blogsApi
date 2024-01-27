@@ -17,7 +17,16 @@ const verify = (token) => {
   return payload;
 };
 
+const splitToken = (token) => {
+  const [type, value] = token.split(' ');
+  if (!value || type !== 'Bearer') {
+    throw new Error('Token malformatted');
+  }
+  return value;
+};
+
 module.exports = {
   createToken,
   verify,
+  splitToken,
 };
