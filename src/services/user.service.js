@@ -1,26 +1,16 @@
 const { User } = require('../models');
 const { createToken } = require('../utils/auth');
-const { userSchema } = require('./validations/user.schema');
-
-/* 
-  Find user by email
-*/
-const findUserByEmail = async (email) => {
-  const user = await User.findOne({ where: { email } });
-  if (user) throw new Error('User already registered');
-  return false;
-};
+const { validateUserBody, validateUserByEmail } = require('./validations/user.validate');
 
 /* 
   Create new user
 */
 const createUser = async (displayName, email, password, image) => {
   // Validate user body data 
-  const { error } = userSchema.validate({ displayName, email, password, image });
-  if (error) throw new Error(error.message);
+  validateUserBody(displayName, email, password, image);
 
-  // Check if user already exists
-  await findUserByEmail(email);
+  // Validate if user already exists
+  await validateUserByEmail(email);
 
   // Create user and token
   const user = await User.create({ displayName, email, password, image });
@@ -29,6 +19,15 @@ const createUser = async (displayName, email, password, image) => {
   return { status: 'CREATED', data: { token } };
 };
 
+/* 
+  Get all users
+*/
+const getAllUsers = async () => {
+  const users = await User.findAll({ attributes: { exclude: ['password'] } });
+  return { status: 'SUCCESSFUL', data: users };
+};
+
 module.exports = {
   createUser,
+  getAllUsers,
 };
