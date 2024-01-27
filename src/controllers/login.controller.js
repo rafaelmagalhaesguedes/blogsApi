@@ -1,10 +1,10 @@
-const userService = require('../services/login.service');
+const { loginService } = require('../services');
 const httpStatus = require('../utils/mapStatusHTTP');
 
-const loginController = async (req, res) => {
+const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const { status, data } = await userService.loginService(email, password);
+    const { status, data } = await loginService.loginService(email, password);
     return res.status(httpStatus[status]).json(data);
   } catch (error) {
     return res.status(httpStatus.INVALID_VALUE).json({ message: error.message });
@@ -12,5 +12,5 @@ const loginController = async (req, res) => {
 };
 
 module.exports = {
-  loginController,
+  loginUser,
 };
