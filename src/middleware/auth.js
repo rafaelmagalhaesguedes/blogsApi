@@ -1,4 +1,4 @@
-const { verify, splitToken } = require('../utils/auth');
+const { splitToken, verifyToken } = require('../utils/auth');
 const httpStatus = require('../utils/mapStatusHTTP');
 
 const authenticate = (req, res, next) => {
@@ -10,12 +10,11 @@ const authenticate = (req, res, next) => {
 
   try {
     const token = splitToken(authorization);
-    const payload = verify(token);
+    const user = verifyToken(token);
 
-    req.user = payload;
+    req.user = user;
     next();
   } catch (error) {
-    console.log(error.message);
     return res.status(httpStatus.UNAUTHORIZED).json({ message: 'Expired or invalid token' });
   }
 };
