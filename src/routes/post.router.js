@@ -13,4 +13,7 @@ router.get('/', authenticate, postController.getAllPosts);
 // Route to get a post by id
 router.get('/:id', authenticate, postController.getPostById);
 
+// Route to update a post
+router.put('/:id', authenticate, postController.updatePost);
+
 module.exports = router;
