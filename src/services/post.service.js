@@ -41,12 +41,35 @@ const getAllPosts = async () => {
     ],
   });
 
-  if (!posts) throw new Error('Posts not found');
+  if (!posts) {
+    return { status: 'NOT_FOUND', data: { message: 'Posts does not exist' } };
+  }
 
   return { status: 'SUCCESSFUL', data: posts };
+};
+
+/* 
+  The getPostById function is responsible for returning a post by id, 
+  including the user who created the post and the categories to which 
+  the post belongs.
+*/
+const getPostById = async (id) => {
+  const post = await BlogPost.findByPk(id, {
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  if (!post) {
+    return { status: 'NOT_FOUND', data: { message: 'Post does not exist' } };
+  }
+
+  return { status: 'SUCCESSFUL', data: post };
 };
 
 module.exports = {
   createPost,
   getAllPosts,
+  getPostById,
 };
