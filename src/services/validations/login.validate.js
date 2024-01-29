@@ -1,28 +1,26 @@
 const { bodySchema } = require('./schemas/login.schema');
 const { User } = require('../../models');
+const { httpError } = require('../../utils/httpErrors');
 
-/* 
-  Validate the request body
-*/
 const validateRequestBody = (email, password) => {
   const { error } = bodySchema.validate({ email, password });
-  if (error) throw new Error('Some required fields are missing');
+  if (error) {
+    throw httpError(error.message, 400);
+  }
 };
 
-/*
-  Validate the user by email
-*/
 const validateUserByEmail = async (email) => {
   const user = await User.findOne({ where: { email } });
-  if (!user) throw new Error('Invalid fields');
+  if (!user) {
+    throw httpError('Invalid fields', 400);
+  }
   return user;
 };
 
-/* 
-  Validate the password
-*/
 const validatePassword = (password, userPassword) => {
-  if (password !== userPassword) throw new Error('Invalid fields');
+  if (password !== userPassword) {
+    throw httpError('Invalid fields', 400);
+  }
 };
 
 module.exports = {

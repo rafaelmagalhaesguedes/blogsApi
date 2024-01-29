@@ -7,7 +7,7 @@ const loginUser = async (req, res) => {
     const { status, data } = await loginService.loginService(email, password);
     return res.status(httpStatus[status]).json(data);
   } catch (error) {
-    return res.status(httpStatus.INVALID_VALUE).json({ message: error.message });
+    return res.status(error.statusCode).json({ message: error.message });
   }
 };
 
