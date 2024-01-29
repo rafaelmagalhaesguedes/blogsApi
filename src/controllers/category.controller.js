@@ -3,7 +3,6 @@ const httpStatus = require('../utils/mapStatusHTTP');
 
 const createCategory = async (req, res) => {
   const { name } = req.body;
-
   try {
     const { status, data } = await categoryService.createCategory(name);
     return res.status(httpStatus[status]).json(data);
@@ -14,7 +13,6 @@ const createCategory = async (req, res) => {
 
 const getAllCategories = async (req, res) => {
   const { status, data } = await categoryService.getAllCategories();
-  
   return res.status(httpStatus[status]).json(data);
 };
 

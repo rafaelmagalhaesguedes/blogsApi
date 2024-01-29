@@ -1,10 +1,10 @@
 const { Op } = require('sequelize');
 const { Category, PostCategory } = require('../models');
+const { httpError } = require('../utils/httpErrors');
 
 const createCategory = async (name) => {
-  if (!name) return { status: 'INVALID_VALUE', data: { message: '"name" is required' } };
+  if (!name) throw httpError('"name" is required', 400);
   const category = await Category.create({ name });
-
   return { status: 'CREATED', data: category };
 };
 
