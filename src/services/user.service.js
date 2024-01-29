@@ -22,7 +22,7 @@ const getAllUsers = async () => {
 const getUserById = async (id) => {
   const user = await User.findByPk(id, { attributes: { exclude: ['password'] } });
 
-  if (!user) throw httpError('User does not exist', 400);
+  if (!user) throw httpError('User does not exist', 404);
 
   return { status: 'SUCCESSFUL', data: user };
 };

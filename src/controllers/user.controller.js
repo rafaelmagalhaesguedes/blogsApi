@@ -22,7 +22,7 @@ const getUserById = async (req, res) => {
     const { status, data } = await userService.getUserById(id);
     return res.status(httpStatus[status]).json(data);
   } catch (error) {
-    return res.status(httpStatus.NOT_FOUND).json({ message: error.message });
+    return res.status(error.statusCode).json({ message: error.message });
   }
 };
 
