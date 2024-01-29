@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 const { Op } = require('sequelize');
 const { User, BlogPost, Category, PostCategory } = require('../models');
 const { postValidate } = require('./validations');
@@ -9,7 +8,6 @@ const { postValidate } = require('./validations');
 const createPostCategory = async (categoryIds, postId) => {
   const categories = await Category.findAll({ where: { id: { [Op.in]: categoryIds } } });
   const newPostCategories = categories.map((categorie) => ({ postId, categoryId: categorie.id }));
-
   await PostCategory.bulkCreate(newPostCategories);
 };
 
@@ -38,10 +36,7 @@ const getAllPosts = async () => {
       { model: Category, as: 'categories', through: { attributes: [] } },
     ],
   });
-
-  if (!posts) {
-    return { status: 'NOT_FOUND', data: { message: 'Posts does not exist' } };
-  }
+  if (!posts) return { status: 'NOT_FOUND', data: { message: 'Posts does not exist' } };
 
   return { status: 'SUCCESSFUL', data: posts };
 };
@@ -58,11 +53,8 @@ const getPostById = async (id) => {
       { model: Category, as: 'categories', through: { attributes: [] } },
     ],
   });
-
-  if (!post) {
-    return { status: 'NOT_FOUND', data: { message: 'Post does not exist' } };
-  }
-
+  if (!post) return { status: 'NOT_FOUND', data: { message: 'Post does not exist' } };
+  
   return { status: 'SUCCESSFUL', data: post };
 };
 
@@ -73,10 +65,8 @@ const getPostById = async (id) => {
 const updatePost = async (id, { title, content }, userId) => {
   // Check if post exists
   const post = await BlogPost.findByPk(id);
-  if (!post) {
-    return { status: 'NOT_FOUND', data: { message: 'Post does not exist' } };
-  }
-
+  if (!post) return { status: 'NOT_FOUND', data: { message: 'Post does not exist' } };
+  
   // Check if user is the post author
   if (post.userId !== userId) {
     return { status: 'UNAUTHORIZED', data: { message: 'Unauthorized user' } };
@@ -85,19 +75,10 @@ const updatePost = async (id, { title, content }, userId) => {
   // Update post
   await BlogPost.update({ title, content, updated: new Date() }, { where: { id } });
 
-  const result = await BlogPost.findByPk(post.id, {
-    include: [
-      { model: User, as: 'user', attributes: { exclude: ['password'] } },
-      { model: Category, as: 'categories', through: { attributes: [] } },
-    ],
-  });
-
-  return { status: 'SUCCESSFUL', data: result };
+  // Get updated post
+  const { status, data } = await getPostById(post.id);
+  
+  return { status, data };
 };
 
-module.exports = {
-  createPost,
-  getAllPosts,
-  getPostById,
-  updatePost,
-};
+module.exports = { createPost, getAllPosts, getPostById, updatePost };
