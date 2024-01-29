@@ -4,8 +4,13 @@ const { authenticate } = require('../middleware/auth');
 
 const router = express.Router();
 
+// Route to create a new post
 router.post('/', authenticate, postController.createPost);
 
+// Route to get all posts
 router.get('/', authenticate, postController.getAllPosts);
+
+// Route to get a post by id
+router.get('/:id', authenticate, postController.getPostById);
 
 module.exports = router;
