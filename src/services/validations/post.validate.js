@@ -1,11 +1,8 @@
 const { Op } = require('sequelize');
-const { Category } = require('../../models');
+const { BlogPost, Category } = require('../../models');
+const { httpError } = require('../../utils/httpErrors');
 
-/* 
-  Find all categories by id and count them to compare
-  with the length of the array of ids
-*/
-const findCategories = async (categoryIds) => {
+const checkCategoriesExist = async (categoryIds) => {
   const { count } = await Category.findAndCountAll({
     where: {
       id: {
@@ -13,29 +10,40 @@ const findCategories = async (categoryIds) => {
       },
     },
   });
-  const isAllCategoriesExist = count === categoryIds.length;
-  return isAllCategoriesExist;
+  const allCategoriesExist = count === categoryIds.length;
+  return allCategoriesExist;
 };
 
-/* 
-  Validate post body data
-*/
-const validatePostBody = ({ title, content, categoryIds }) => {
-  if (!title || !content || !categoryIds) {
-    throw new Error('Some required fields are missing');
+const checkPostExist = async (id) => {
+  const post = await BlogPost.findByPk(id);
+  if (!post) {
+    throw httpError('Post does not exist', 404);
+  }
+  return post;
+};
+
+const checkUserIsAuthor = (post, userId) => {
+  if (post.userId !== userId) {
+    throw httpError('Unauthorized user', 401);
   }
 };
 
-/* 
-  Validate if all categories exists  
-*/
+const validatePostBody = ({ title, content, categoryIds }) => {
+  if (!title || !content || !categoryIds) {
+    throw httpError('Some required fields are missing', 400);
+  }
+};
+
 const validateCategory = async (categoryIds) => {
-  if (!await findCategories(categoryIds)) {
-    throw new Error('one or more "categoryIds" not found');
+  const categories = await checkCategoriesExist(categoryIds); 
+  if (!categories) {
+    throw httpError('one or more "categoryIds" not found', 400);
   }
 };
 
 module.exports = {
   validatePostBody,
   validateCategory,
+  checkPostExist,
+  checkUserIsAuthor,
 };
