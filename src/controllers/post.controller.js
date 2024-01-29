@@ -4,7 +4,6 @@ const httpStatus = require('../utils/mapStatusHTTP');
 const createPost = async (req, res) => {
   const post = req.body;
   const userId = req.user.id;
-
   try {
     const { status, data } = await postService.createPost(post, userId);
     res.status(httpStatus[status]).json(data);
@@ -14,15 +13,18 @@ const createPost = async (req, res) => {
 };
 
 const getAllPosts = async (req, res) => {
-  try {
-    const { status, data } = await postService.getAllPosts();
-    res.status(httpStatus[status]).json(data);
-  } catch (error) {
-    return res.status(httpStatus.INVALID_VALUE).json({ message: error.message });
-  }
+  const { status, data } = await postService.getAllPosts();
+  res.status(httpStatus[status]).json(data);
+};
+
+const getPostById = async (req, res) => {
+  const { id } = req.params;
+  const { status, data } = await postService.getPostById(id);
+  res.status(httpStatus[status]).json(data);
 };
 
 module.exports = {
   createPost,
   getAllPosts,
+  getPostById,
 };
