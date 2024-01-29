@@ -1,21 +1,15 @@
 const { User } = require('../../models');
+const { httpError } = require('../../utils/httpErrors');
 const { userSchema } = require('./schemas/user.schema');
 
-/* 
-  Validate user body data
-*/
 const validateUserBody = (displayName, email, password, image) => {
   const { error } = userSchema.validate({ displayName, email, password, image });
-  if (error) throw new Error(error.message);
+  if (error) throw httpError(error.message, 400);
 };
 
-/* 
-  Validate if user already exists
-*/
 const validateUserByEmail = async (email) => {
   const user = await User.findOne({ where: { email } });
-  if (user) throw new Error('User already registered');
-  return false;
+  if (user) throw httpError('User already registered', 409);
 };
 
 module.exports = {

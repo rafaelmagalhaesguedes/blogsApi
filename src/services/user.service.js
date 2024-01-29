@@ -1,10 +1,10 @@
 const { User } = require('../models');
 const { createToken } = require('../utils/auth');
+const { httpError } = require('../utils/httpErrors');
 const { validateUserBody, validateUserByEmail } = require('./validations/user.validate');
 
-const createUser = async (displayName, email, password, image) => {
+const createUser = async ({ displayName, email, password, image }) => {
   validateUserBody(displayName, email, password, image);
-
   await validateUserByEmail(email);
 
   const user = await User.create({ displayName, email, password, image });
@@ -21,7 +21,8 @@ const getAllUsers = async () => {
 
 const getUserById = async (id) => {
   const user = await User.findByPk(id, { attributes: { exclude: ['password'] } });
-  if (!user) throw new Error('User does not exist');
+
+  if (!user) throw httpError('User does not exist', 400);
 
   return { status: 'SUCCESSFUL', data: user };
 };
