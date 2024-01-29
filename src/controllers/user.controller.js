@@ -12,12 +12,8 @@ const createUser = async (req, res) => {
 };
 
 const getAllUsers = async (req, res) => {
-  try {
-    const { status, data } = await userService.getAllUsers();
-    return res.status(httpStatus[status]).json(data);
-  } catch (error) {
-    return res.status(httpStatus.INTERNAL_ERROR).json({ message: error.message });
-  }
+  const { status, data } = await userService.getAllUsers();
+  return res.status(httpStatus[status]).json(data);
 };
 
 const getUserById = async (req, res) => {
