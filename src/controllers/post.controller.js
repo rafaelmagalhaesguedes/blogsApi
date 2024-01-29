@@ -8,7 +8,7 @@ const createPost = async (req, res) => {
     const { status, data } = await postService.createPost(post, userId);
     res.status(httpStatus[status]).json(data);
   } catch (error) {
-    return res.status(httpStatus.INVALID_VALUE).json({ message: error.message });
+    return res.status(error.statusCode).json({ message: error.message });
   }
 };
 
@@ -29,15 +29,12 @@ const updatePost = async (req, res) => {
   const { id } = req.params;
   const post = req.body;
   const userId = req.user.id;
-  
-  if (!post.title || !post.content) {
-    return res.status(httpStatus.INVALID_VALUE)
-      .json({ message: 'Some required fields are missing' });
+  try {
+    const { status, data } = await postService.updatePost(id, post, userId);
+    res.status(httpStatus[status]).json(data);
+  } catch (error) {
+    return res.status(error.statusCode).json({ message: error.message });
   }
-
-  const { status, data } = await postService.updatePost(id, post, userId);
-  
-  res.status(httpStatus[status]).json(data);
 };
 
 module.exports = {
