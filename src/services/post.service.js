@@ -1,7 +1,6 @@
-const { BlogPost, PostCategory } = require('../models');
+const { BlogPost } = require('../models');
 const { postValidate } = require('./validations');
-const { search, create, findAll, findById } = require('./repository/post.repository');
-const { httpError } = require('../utils/httpErrors');
+const { search, create, findAll, findById, destroy } = require('./repository/post.repository');
 
 const createPost = async ({ title, content, categoryIds }, userId) => {
   postValidate.validatePostBody({ title, content, categoryIds });
@@ -32,21 +31,18 @@ const updatePost = async (id, { title, content }, userId) => {
   postValidate.checkUserIsAuthor(post, userId);
 
   await BlogPost.update({ title, content, updated: new Date() }, { where: { id } });
+  
   const { status, data } = await getPostById(post.id);
 
   return { status, data };
 };
 
 const deletePost = async (postId, userId) => {
-  const post = await BlogPost.findOne({ where: { id: postId } });
+  await postValidate.validateUserToDeletePost(postId, userId);
 
-  if (!post) throw httpError('Post does not exist', 404);
-  if (post.userId !== userId) throw httpError('Unauthorized user', 401);
-
-  await PostCategory.destroy({ where: { postId } });
-  await BlogPost.destroy({ where: { id: postId } });
-
-  return { status: 'NO_CONTENT', data: null };
+  const { status, data } = await destroy(postId);
+  
+  return { status, data };
 };
 
 const searchPosts = async (searchString) => {
