@@ -1,4 +1,4 @@
-const { BlogPost } = require('../models');
+const { BlogPost, PostCategory } = require('../models');
 const { postValidate } = require('./validations');
 const { search, create, findAll, findById } = require('./repository/post.repository');
 const { httpError } = require('../utils/httpErrors');
@@ -37,13 +37,16 @@ const updatePost = async (id, { title, content }, userId) => {
   return { status, data };
 };
 
-const deletePost = async (id, userId) => {
-  const post = await BlogPost.findByPk(id);
+const deletePost = async (postId, userId) => {
+  const post = await BlogPost.findOne({ where: { id: postId } });
 
   if (!post) throw httpError('Post does not exist', 404);
-  if (userId !== post.userId) throw httpError('Unauthorized user', 401);
+  if (post.userId !== userId) throw httpError('Unauthorized user', 401);
 
-  return { status: 'NO_CONTENT', data: { message: 'Post successfully deleted' } };
+  await PostCategory.destroy({ where: { postId } });
+  await BlogPost.destroy({ where: { id: postId } });
+
+  return { status: 'NO_CONTENT', data: null };
 };
 
 const searchPosts = async (searchString) => {
