@@ -16,34 +16,41 @@ const checkCategoriesExist = async (categoryIds) => {
 
 const checkPostExist = async (id) => {
   const post = await BlogPost.findByPk(id);
-  if (!post) {
-    throw httpError('Post does not exist', 404);
-  }
+  if (!post) throw httpError('Post does not exist', 404);
+  return post;
+};
+
+const checkPostByUserId = async (postId, userId) => {
+  const post = await BlogPost.findOne({ where: { id: postId } });
+  if (!post) throw httpError('Post does not exist', 404);
+  if (post.userId !== userId) throw httpError('Unauthorized user', 401);
   return post;
 };
 
 const checkUserIsAuthor = (post, userId) => {
-  if (post.userId !== userId) {
-    throw httpError('Unauthorized user', 401);
-  }
+  if (post.userId !== userId) throw httpError('Unauthorized user', 401);
 };
 
 const validatePostBody = ({ title, content, categoryIds }) => {
-  if (!title || !content || !categoryIds) {
-    throw httpError('Some required fields are missing', 400);
-  }
+  if (!title || !content || !categoryIds) throw httpError('Some required fields are missing', 400);
 };
 
 const validateCategory = async (categoryIds) => {
   const categories = await checkCategoriesExist(categoryIds); 
-  if (!categories) {
-    throw httpError('one or more "categoryIds" not found', 400);
-  }
+  if (!categories) throw httpError('one or more "categoryIds" not found', 400);
 };
+
+const validateUserToDeletePost = async (postId, userId) => {
+  const post = await BlogPost.findOne({ where: { id: postId } });
+  if (!post) throw httpError('Post does not exist', 404);
+  if (post.userId !== userId) throw httpError('Unauthorized user', 401);
+}; 
 
 module.exports = {
   validatePostBody,
   validateCategory,
   checkPostExist,
   checkUserIsAuthor,
+  checkPostByUserId,
+  validateUserToDeletePost,
 };
