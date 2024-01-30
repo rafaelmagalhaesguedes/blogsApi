@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { BlogPost, User, Category } = require('../../models');
+const { BlogPost, User, Category, PostCategory } = require('../../models');
 const { createPostCategory } = require('../category.service');
 
 const create = async ({ title, content, categoryIds, userId }) => {
@@ -44,9 +44,11 @@ const findById = async (id) => {
   return post;
 };
 
-module.exports = {
-  create,
-  search,
-  findAll,
-  findById,
+const destroy = async (postId) => {
+  await PostCategory.destroy({ where: { postId } });
+  await BlogPost.destroy({ where: { id: postId } });
+
+  return { status: 'NO_CONTENT', data: null };
 };
+
+module.exports = { create, search, findAll, findById, destroy };
