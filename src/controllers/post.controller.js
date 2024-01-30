@@ -1,11 +1,10 @@
 const { postService } = require('../services');
+const statusHTTP = require('../utils/mapStatusHTTP');
 const httpStatus = require('../utils/mapStatusHTTP');
 
 const createPost = async (req, res) => {
-  const post = req.body;
-  const userId = req.user.id;
   try {
-    const { status, data } = await postService.createPost(post, userId);
+    const { status, data } = await postService.createPost(req.body, req.user.id);
     res.status(httpStatus[status]).json(data);
   } catch (error) {
     return res.status(error.statusCode).json({ message: error.message });
@@ -13,22 +12,26 @@ const createPost = async (req, res) => {
 };
 
 const getAllPosts = async (req, res) => {
-  const { status, data } = await postService.getAllPosts();
-  res.status(httpStatus[status]).json(data);
+  try {
+    const { status, data } = await postService.getAllPosts();
+    res.status(httpStatus[status]).json(data);
+  } catch (error) {
+    return res.status(statusHTTP.INTERNAL_ERROR).json({ message: error.message });
+  }
 };
 
 const getPostById = async (req, res) => {
-  const { id } = req.params;
-  const { status, data } = await postService.getPostById(id);
-  res.status(httpStatus[status]).json(data);
+  try {
+    const { status, data } = await postService.getPostById(req.params.id);
+    res.status(httpStatus[status]).json(data);
+  } catch (error) {
+    return res.status(statusHTTP.INTERNAL_ERROR).json({ message: error.message });
+  }
 };
 
 const updatePost = async (req, res) => {
-  const { id } = req.params;
-  const post = req.body;
-  const userId = req.user.id;
   try {
-    const { status, data } = await postService.updatePost(id, post, userId);
+    const { status, data } = await postService.updatePost(req.params.id, req.body, req.user.id);
     res.status(httpStatus[status]).json(data);
   } catch (error) {
     return res.status(error.statusCode).json({ message: error.message });
@@ -36,20 +39,22 @@ const updatePost = async (req, res) => {
 };
 
 const deletePost = async (req, res) => {
-  const { id } = req.params;
-  const userId = req.user.id;
   try {
-    const { status, data } = await postService.deletePost(id, userId);
+    const { status, data } = await postService.deletePost(req.params.id, req.user.id);
     res.status(httpStatus[status]).json(data);
   } catch (error) {
     return res.status(error.statusCode).json({ message: error.message });
   }
 };
 
-module.exports = {
-  createPost,
-  getAllPosts,
-  getPostById,
-  updatePost,
-  deletePost,
+const searchPosts = async (req, res) => {
+  const { q } = req.query;
+  try {
+    const { status, data } = await postService.searchPosts(q);
+    res.status(statusHTTP[status]).json(data);
+  } catch (error) {
+    return res.status(statusHTTP.INTERNAL_ERROR).json({ message: error.message });
+  }
 };
+
+module.exports = { createPost, getAllPosts, getPostById, updatePost, deletePost, searchPosts };
