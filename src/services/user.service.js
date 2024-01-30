@@ -32,10 +32,7 @@ const deleteUser = async (id, email) => {
   const blogPosts = await BlogPost.findAll({ where: { userId: id } });
 
   // Delete the categories of each blog post
-  const deleteCategoriesPromises = blogPosts.map((post) => 
-    PostCategory.destroy({ where: { postId: post.id } }));
-
-  await Promise.all(deleteCategoriesPromises);
+  await Promise.all(blogPosts.map((post) => PostCategory.destroy({ where: { postId: post.id } })));
 
   // Delete the user's blog posts
   await BlogPost.destroy({ where: { userId: id } });
@@ -43,7 +40,7 @@ const deleteUser = async (id, email) => {
   // Delete the user
   await User.destroy({ where: { email } });
 
-  return { status: 'NO_CONTENT', data: { message: 'User deleted successfully' } };
+  return { status: 'NO_CONTENT', data: null };
 };
 
 module.exports = {
