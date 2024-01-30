@@ -1,6 +1,5 @@
 const { postService } = require('../services');
-const statusHTTP = require('../utils/mapStatusHTTP');
-const httpStatus = require('../utils/mapStatusHTTP');
+const { httpStatus } = require('../utils/httpStatus');
 
 const createPost = async (req, res) => {
   try {
@@ -16,7 +15,7 @@ const getAllPosts = async (req, res) => {
     const { status, data } = await postService.getAllPosts();
     res.status(httpStatus[status]).json(data);
   } catch (error) {
-    return res.status(statusHTTP.INTERNAL_ERROR).json({ message: error.message });
+    return res.status(httpStatus.INTERNAL_ERROR).json({ message: error.message });
   }
 };
 
@@ -25,7 +24,7 @@ const getPostById = async (req, res) => {
     const { status, data } = await postService.getPostById(req.params.id);
     res.status(httpStatus[status]).json(data);
   } catch (error) {
-    return res.status(statusHTTP.INTERNAL_ERROR).json({ message: error.message });
+    return res.status(httpStatus.INTERNAL_ERROR).json({ message: error.message });
   }
 };
 
@@ -50,9 +49,9 @@ const deletePost = async (req, res) => {
 const searchPosts = async (req, res) => {
   try {
     const { status, data } = await postService.searchPosts(req.query.q);
-    res.status(statusHTTP[status]).json(data);
+    res.status(httpStatus[status]).json(data);
   } catch (error) {
-    return res.status(statusHTTP.INTERNAL_ERROR).json({ message: error.message });
+    return res.status(httpStatus.INTERNAL_ERROR).json({ message: error.message });
   }
 };
 

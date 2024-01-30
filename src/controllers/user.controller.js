@@ -1,5 +1,5 @@
 const { userService } = require('../services');
-const httpStatus = require('../utils/mapStatusHTTP');
+const { httpStatus } = require('../utils/httpStatus');
 
 const createUser = async (req, res) => {
   const userData = req.body;
@@ -12,8 +12,12 @@ const createUser = async (req, res) => {
 };
 
 const getAllUsers = async (req, res) => {
-  const { status, data } = await userService.getAllUsers();
-  return res.status(httpStatus[status]).json(data);
+  try {
+    const { status, data } = await userService.getAllUsers();
+    return res.status(httpStatus[status]).json(data);
+  } catch (error) {
+    return res.status(httpStatus.INTERNAL_ERROR).json({ message: error.message });
+  }
 };
 
 const getUserById = async (req, res) => {

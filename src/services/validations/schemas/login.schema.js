@@ -13,6 +13,4 @@ const bodySchema = Joi.object({
   }),
 });
 
-module.exports = { 
-  bodySchema,
-};
+module.exports = { bodySchema };

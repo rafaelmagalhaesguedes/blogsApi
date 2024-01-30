@@ -1,4 +1,4 @@
-const statusHTTP = {
+const httpStatus = {
   SUCCESSFUL: 200,
   CREATED: 201,
   NOT_FOUND: 404,
@@ -9,4 +9,4 @@ const statusHTTP = {
   NO_CONTENT: 204,
 };
 
-module.exports = statusHTTP;
+module.exports = { httpStatus };

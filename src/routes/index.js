@@ -1,3 +1,5 @@
+//
+// Barrel Routes
 const { Router } = require('express');
 
 const loginRouter = require('./login.router');

@@ -1,5 +1,5 @@
 const { splitToken, verifyToken } = require('../utils/auth');
-const httpStatus = require('../utils/mapStatusHTTP');
+const { httpStatus } = require('../utils/httpStatus');
 
 const authenticate = (req, res, next) => {
   const { authorization } = req.headers;
