@@ -48,9 +48,8 @@ const deletePost = async (req, res) => {
 };
 
 const searchPosts = async (req, res) => {
-  const { q } = req.query;
   try {
-    const { status, data } = await postService.searchPosts(q);
+    const { status, data } = await postService.searchPosts(req.query.q);
     res.status(statusHTTP[status]).json(data);
   } catch (error) {
     return res.status(statusHTTP.INTERNAL_ERROR).json({ message: error.message });
