@@ -1,4 +1,5 @@
 const { categoryService } = require('../services');
+const statusHTTP = require('../utils/mapStatusHTTP');
 const httpStatus = require('../utils/mapStatusHTTP');
 
 const createCategory = async (req, res) => {
@@ -12,8 +13,12 @@ const createCategory = async (req, res) => {
 };
 
 const getAllCategories = async (req, res) => {
-  const { status, data } = await categoryService.getAllCategories();
-  return res.status(httpStatus[status]).json(data);
+  try {
+    const { status, data } = await categoryService.getAllCategories();
+    return res.status(httpStatus[status]).json(data);
+  } catch (error) {
+    return res.status(statusHTTP.INTERNAL_ERROR).json({ message: error.message });
+  }
 };
 
 module.exports = {
