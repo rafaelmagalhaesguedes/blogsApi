@@ -1,6 +1,7 @@
 const { User, BlogPost, Category } = require('../models');
 const { postValidate } = require('./validations');
 const { createPostCategory } = require('./category.service');
+const { httpError } = require('../utils/httpErrors');
 
 const createPost = async ({ title, content, categoryIds }, userId) => {
   postValidate.validatePostBody({ title, content, categoryIds });
@@ -37,7 +38,7 @@ const getPostById = async (id) => {
 };
 
 const updatePost = async (id, { title, content }, userId) => {
-  await postValidate.validatePostBody({ title, content, categoryIds: [] });
+  postValidate.validatePostBody({ title, content, categoryIds: [] });
   const post = await postValidate.checkPostExist(id);
   postValidate.checkUserIsAuthor(post, userId);
 
@@ -46,4 +47,13 @@ const updatePost = async (id, { title, content }, userId) => {
   return { status, data };
 };
 
-module.exports = { createPost, getAllPosts, getPostById, updatePost };
+const deletePost = async (id, userId) => {
+  const post = await BlogPost.findByPk(id);
+
+  if (!post) throw httpError('Post does not exist', 404);
+  if (userId !== post.userId) throw httpError('Unauthorized user', 401);
+
+  return { status: 'NO_CONTENT', data: { message: 'Post successfully deleted' } };
+};
+
+module.exports = { createPost, getAllPosts, getPostById, updatePost, deletePost };
