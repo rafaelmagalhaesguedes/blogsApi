@@ -16,4 +16,7 @@ router.get('/:id', authenticate, postController.getPostById);
 // Route to update a post
 router.put('/:id', authenticate, postController.updatePost);
 
+// Route to delete a post
+router.delete('/:id', authenticate, postController.deletePost);
+
 module.exports = router;
