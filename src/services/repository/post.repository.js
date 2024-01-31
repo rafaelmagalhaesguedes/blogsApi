@@ -44,11 +44,16 @@ const findById = async (id) => {
   return post;
 };
 
+const update = async (id, { title, content }, userId) => {
+  await BlogPost.update({ title, content, updated: new Date() }, { where: { id } });
+  const post = await findById(userId);
+  return post;
+};
+
 const destroy = async (postId) => {
   await PostCategory.destroy({ where: { postId } });
   await BlogPost.destroy({ where: { id: postId } });
-
   return { status: 'NO_CONTENT', data: null };
 };
 
-module.exports = { create, search, findAll, findById, destroy };
+module.exports = { create, search, findAll, findById, update, destroy };
