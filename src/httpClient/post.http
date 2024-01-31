@@ -1,0 +1,35 @@
+### POST /post
+POST http://localhost:3001/post
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTcwNjY2Njc0NywiZXhwIjoxNzA3MjcxNTQ3fQ.8FHUdjqMpgrgB0uJvhqOiNaiAipe2G10DrP0nS00Opo
+
+{
+  "title": "Fórmula 1",
+  "content": "O campeão do ano!",
+  "categoryIds": [1, 2]
+}
+
+### GET /post
+GET http://localhost:3001/post
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTcwNjY2Njc0NywiZXhwIjoxNzA3MjcxNTQ3fQ.8FHUdjqMpgrgB0uJvhqOiNaiAipe2G10DrP0nS00Opo
+
+### GET /post/:id
+GET http://localhost:3001/post/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTcwNjY2Njc0NywiZXhwIjoxNzA3MjcxNTQ3fQ.8FHUdjqMpgrgB0uJvhqOiNaiAipe2G10DrP0nS00Opo
+
+### PUT /post/:id
+PUT http://localhost:3001/post/3
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTcwNjY2Njc0NywiZXhwIjoxNzA3MjcxNTQ3fQ.8FHUdjqMpgrgB0uJvhqOiNaiAipe2G10DrP0nS00Opo
+
+{
+  "title": "Fórmula 2",
+  "content": "O campeão do ano que vem!",
+  "categoryIds": [1, 2]
+}
+
+### DELETE /post/:id
+DELETE http://localhost:3001/post/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTcwNjY2Njc0NywiZXhwIjoxNzA3MjcxNTQ3fQ.8FHUdjqMpgrgB0uJvhqOiNaiAipe2G10DrP0nS00Opo

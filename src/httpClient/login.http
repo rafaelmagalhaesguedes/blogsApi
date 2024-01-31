@@ -1,0 +1,13 @@
+### REQUEST
+POST http://localhost:3001/login
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password": "123456"
+}
+
+### RESPONSE
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTcwNjY2Njc0NywiZXhwIjoxNzA3MjcxNTQ3fQ.8FHUdjqMpgrgB0uJvhqOiNaiAipe2G10DrP0nS00Opo"
+}

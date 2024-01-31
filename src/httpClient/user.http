@@ -1,0 +1,23 @@
+### `POST /user`
+POST http://localhost:3001/user
+Content-Type: application/json
+
+{
+  "displayName": "User Test",
+  "email": "test@gmail.com",
+  "password": "123456",
+  "image": "http://4.bp.blogspot.com/_YA50adQ-7vQ/S1gfR_6ufpI/AAAAAAAAAAk/1ErJGgRWZDg/S45/brett.png"
+}
+
+### `GET /user`
+GET http://localhost:3001/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6bnVsbCwiaWF0IjoxNzA2NjY2Njk4LCJleHAiOjE3MDcyNzE0OTh9.kGPFKgrqiDMJBDGY492ZIEoFn1cNOpgZwVZemn_SrUc
+
+
+### `GET /user/:id`
+GET http://localhost:3001/user/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6bnVsbCwiaWF0IjoxNzA2NjY2Njk4LCJleHAiOjE3MDcyNzE0OTh9.kGPFKgrqiDMJBDGY492ZIEoFn1cNOpgZwVZemn_SrUc
+
+### `DELETE /user/:id`
+DELETE http://localhost:3001/user/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6bnVsbCwiaWF0IjoxNzA2NjY2Njk4LCJleHAiOjE3MDcyNzE0OTh9.kGPFKgrqiDMJBDGY492ZIEoFn1cNOpgZwVZemn_SrUc
