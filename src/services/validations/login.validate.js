@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const { bodySchema } = require('./schemas/login.schema');
 const { User } = require('../../models');
 const { httpError } = require('../../utils/httpErrors');
@@ -18,7 +19,7 @@ const validateUserByEmail = async (email) => {
 };
 
 const validatePassword = (password, userPassword) => {
-  if (password !== userPassword) {
+  if (!bcrypt.compareSync(password, userPassword)) {
     throw httpError('Invalid fields', 400);
   }
 };
