@@ -1,10 +1,10 @@
 const { userRepository } = require('./repository');
+const { userValidation } = require('./validations');
 const { httpError } = require('../utils/httpErrors');
-const { validateUserBody, validateUserByEmail } = require('./validations/user.validate');
 
 const createUser = async ({ displayName, email, password, image }) => {
-  validateUserBody(displayName, email, password, image);
-  await validateUserByEmail(email);
+  userValidation.validateUserBody(displayName, email, password, image);
+  await userValidation.validateUserByEmail(email);
 
   const token = await userRepository.create({ displayName, email, password, image });
 
