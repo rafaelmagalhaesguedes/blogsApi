@@ -11,13 +11,19 @@ Content-Type: application/json
 
 ### `GET /user`
 GET http://localhost:3001/user
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6bnVsbCwiaWF0IjoxNzA2NjY2Njk4LCJleHAiOjE3MDcyNzE0OTh9.kGPFKgrqiDMJBDGY492ZIEoFn1cNOpgZwVZemn_SrUc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJpZCI6bnVsbCwiaWF0IjoxNzA2NjY2Njk4LCJleHAiOjE3MDcyNzE0OTh9.
+kGPFKgrqiDMJBDGY492ZIEoFn1cNOpgZwVZemn_SrUc
 
 
 ### `GET /user/:id`
 GET http://localhost:3001/user/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6bnVsbCwiaWF0IjoxNzA2NjY2Njk4LCJleHAiOjE3MDcyNzE0OTh9.kGPFKgrqiDMJBDGY492ZIEoFn1cNOpgZwVZemn_SrUc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJpZCI6bnVsbCwiaWF0IjoxNzA2NjY2Njk4LCJleHAiOjE3MDcyNzE0OTh9.
+kGPFKgrqiDMJBDGY492ZIEoFn1cNOpgZwVZemn_SrUc
 
 ### `DELETE /user/:id`
 DELETE http://localhost:3001/user/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6bnVsbCwiaWF0IjoxNzA2NjY2Njk4LCJleHAiOjE3MDcyNzE0OTh9.kGPFKgrqiDMJBDGY492ZIEoFn1cNOpgZwVZemn_SrUc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJpZCI6bnVsbCwiaWF0IjoxNzA2NjY2Njk4LCJleHAiOjE3MDcyNzE0OTh9.
+kGPFKgrqiDMJBDGY492ZIEoFn1cNOpgZwVZemn_SrUc

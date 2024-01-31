@@ -9,5 +9,7 @@ Content-Type: application/json
 
 ### RESPONSE
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTcwNjY2Njc0NywiZXhwIjoxNzA3MjcxNTQ3fQ.8FHUdjqMpgrgB0uJvhqOiNaiAipe2G10DrP0nS00Opo"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+  eyJpZCI6MywiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTcwNjY2Njc0NywiZXhwIjoxNzA3MjcxNTQ3fQ.
+  8FHUdjqMpgrgB0uJvhqOiNaiAipe2G10DrP0nS00Opo",
 }
