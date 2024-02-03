@@ -3,7 +3,8 @@ const { BlogPost, User, Category, PostCategory } = require('../../models');
 const { createPostCategory } = require('../category.service');
 
 const create = async ({ title, content, categoryIds, userId }) => {
-  const newPost = await BlogPost.create({ title, content, userId });
+  const newPost = await BlogPost.create({
+    title, content, userId, published: new Date(), updated: new Date() });
   await createPostCategory(categoryIds, newPost.id);
   return newPost;
 };
@@ -34,6 +35,17 @@ const findAll = async () => {
   return posts;
 };
 
+const findAllByUserId = async (userId) => {
+  const posts = await BlogPost.findAll({
+    where: { userId },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  return posts;
+};
+
 const findById = async (id) => {
   const post = await BlogPost.findByPk(id, {
     include: [
@@ -56,4 +68,4 @@ const destroy = async (postId) => {
   return { status: 'NO_CONTENT', data: null };
 };
 
-module.exports = { create, search, findAll, findById, update, destroy };
+module.exports = { create, search, findAll, findById, update, destroy, findAllByUserId };

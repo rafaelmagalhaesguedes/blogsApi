@@ -11,15 +11,10 @@ const createCategory = async (name) => {
 };
 
 const createPostCategory = async (categoryIds, postId) => {
-  const categories = await Category.findAll({
-    where: { id: { [Op.in]: categoryIds } },
-  });
+  const categories = await Category.findAll({ where: { id: { [Op.in]: categoryIds } } });
+  const postCategories = categories.map((category) => ({ postId, categoryId: category.id }));
 
-  const newPostCategories = categories.map((categorie) => (
-    { postId, categoryId: categorie.id }
-  ));
-  
-  await PostCategory.bulkCreate(newPostCategories);
+  await PostCategory.bulkCreate(postCategories);
 };
 
 const getAllCategories = async () => {

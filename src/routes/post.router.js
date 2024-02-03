@@ -13,6 +13,9 @@ router.get('/', authenticate, postController.getAllPosts);
 // Route to search posts
 router.get('/search', authenticate, postController.searchPosts);
 
+// Route to get all posts by user id
+router.get('/user/:id', authenticate, postController.getPostsByUserId);
+
 // Route to get a post by id
 router.get('/:id', authenticate, postController.getPostById);
 

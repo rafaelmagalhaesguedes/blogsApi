@@ -18,6 +18,14 @@ const getAllPosts = async () => {
   return { status: 'SUCCESSFUL', data: posts };
 };
 
+const getPostsByUserId = async (userId) => {
+  const posts = await postRepository.findAllByUserId(userId);
+
+  if (!posts) return { status: 'NOT_FOUND', data: { message: 'Posts does not exist' } };
+
+  return { status: 'SUCCESSFUL', data: posts };
+};
+
 const getPostById = async (id) => {
   const post = await postRepository.findById(id);
 
@@ -52,4 +60,5 @@ const searchPosts = async (searchString) => {
   return { status: 'SUCCESSFUL', data: searchResult };
 };
 
-module.exports = { createPost, getAllPosts, getPostById, updatePost, deletePost, searchPosts };
+module.exports = {
+  createPost, getAllPosts, getPostById, updatePost, deletePost, searchPosts, getPostsByUserId };

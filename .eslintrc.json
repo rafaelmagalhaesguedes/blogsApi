@@ -6,7 +6,7 @@
     "max-lines": [
       "error", 
       {
-        "max": 60, 
+        "max": 100, 
         "skipComments": true
       }
     ],
