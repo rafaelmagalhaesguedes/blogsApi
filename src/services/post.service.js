@@ -2,15 +2,20 @@ const { postValidate } = require('./validations');
 const { postRepository } = require('./repository');
 
 const createPost = async ({ title, content, categoryIds }, userId) => {
+  //
   postValidate.validatePostBody({ title, content, categoryIds });
   await postValidate.validateCategory(categoryIds);
 
-  const newPost = await postRepository.create({ title, content, categoryIds, userId });
-
-  return { status: 'CREATED', data: newPost };
+  try {
+    const newPost = await postRepository.create({ title, content, categoryIds, userId });
+    return { status: 'CREATED', data: newPost };
+  } catch (error) {
+    return { status: 'INTERNAL_SERVER_ERROR', data: { message: error.message } };
+  }
 };
 
 const getAllPosts = async () => {
+  //
   const posts = await postRepository.findAll();
   
   if (!posts) return { status: 'NOT_FOUND', data: { message: 'Posts does not exist' } };
@@ -35,16 +40,21 @@ const getPostById = async (id) => {
 };
 
 const updatePost = async (id, { title, content }, userId) => {
+  //
   postValidate.validatePostBody({ title, content, categoryIds: [] });
   const post = await postValidate.checkPostExist(id);
   postValidate.checkUserIsAuthor(post, userId);
 
-  const postUpdated = await postRepository.update(id, { title, content }, userId);
-  
-  return { status: 'SUCCESSFUL', data: postUpdated };
+  try {
+    const postUpdated = await postRepository.update(id, { title, content }, userId);
+    return { status: 'SUCCESSFUL', data: postUpdated };
+  } catch (error) {
+    return { status: 'INTERNAL_SERVER_ERROR', data: { message: error.message } };
+  }
 };
 
 const deletePost = async (postId, userId) => {
+  //
   await postValidate.validateUserToDeletePost(postId, userId);
 
   const { status, data } = await postRepository.destroy(postId);
