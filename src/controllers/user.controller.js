@@ -2,42 +2,29 @@ const { userService } = require('../services');
 const { httpStatus } = require('../utils/httpStatus');
 
 const createUser = async (req, res) => {
-  const userData = req.body;
-  try {
-    const { status, data } = await userService.createUser(userData);
-    return res.status(httpStatus[status]).json(data);
-  } catch (error) {
-    return res.status(error.statusCode).json({ message: error.message });
-  }
+  //
+  const { status, data } = await userService.createUser(req.body);
+  return res.status(httpStatus[status]).json(data);
 };
 
-const getAllUsers = async (req, res) => {
-  try {
-    const { status, data } = await userService.getAllUsers();
-    return res.status(httpStatus[status]).json(data);
-  } catch (error) {
-    return res.status(httpStatus.INTERNAL_ERROR).json({ message: error.message });
-  }
+const getAllUsers = async (_req, res) => {
+  //
+  const { status, data } = await userService.getAllUsers();
+  return res.status(httpStatus[status]).json(data);
 };
 
 const getUserById = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const { status, data } = await userService.getUserById(id);
-    return res.status(httpStatus[status]).json(data);
-  } catch (error) {
-    return res.status(error.statusCode).json({ message: error.message });
-  }
+  //
+  const { status, data } = await userService.getUserById(req.params.id);
+  return res.status(httpStatus[status]).json(data);
 };
 
 const deleteUser = async (req, res) => {
+  //
   const { id, email } = req.user;
-  try {
-    const { status, data } = await userService.deleteUser(id, email);
-    return res.status(httpStatus[status]).json(data);
-  } catch (error) {
-    return res.status(error.statusCode).json({ message: error.message });
-  }
+  
+  const { status, data } = await userService.deleteUser(id, email);
+  return res.status(httpStatus[status]).json(data);
 };
 
 module.exports = {
