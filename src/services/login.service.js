@@ -6,8 +6,13 @@ const { createToken } = require('../utils/auth');
 const loginService = async (email, password) => {
   //
   const user = await User.findOne({ where: { email } });
-  if (!user || !bcrypt.compareSync(password, user.password)) {
-    return { status: 'INVALID_FIELDS', data: { message: 'Invalid fields' } };
+
+  if (!user) {
+    return { status: 'INVALID_VALUE', data: { message: 'Invalid fields' } };
+  }
+
+  if (!bcrypt.compareSync(password, user.password)) {
+    return { status: 'INVALID_VALUE', data: { message: 'Invalid fields' } };
   }
 
   try {

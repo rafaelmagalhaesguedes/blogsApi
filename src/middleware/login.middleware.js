@@ -13,12 +13,17 @@ const bodySchema = Joi.object({
   }),
 });
 
-const validateLogin = (email, password) => {
+const validateLogin = (req, res, next) => {
   //
+  const { email, password } = req.body;
+
   const { error } = bodySchema.validate({ email, password });
+
   if (error) {
-    return { status: 'INVALID_FIELDS', data: { message: error.message } };
+    return res.status(400).json({ status: 'INVALID_FIELDS', message: error.details[0].message });
   }
+
+  next();
 };
 
 module.exports = {
