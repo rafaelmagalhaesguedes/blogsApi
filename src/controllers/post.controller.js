@@ -7,7 +7,7 @@ const createPost = async (req, res) => {
   res.status(httpStatus[status]).json(data);
 };
 
-const getAllPosts = async (req, res) => {
+const getAllPosts = async (_req, res) => {
   //
   const { status, data } = await postService.getAllPosts();
   res.status(httpStatus[status]).json(data);
@@ -22,7 +22,7 @@ const getPostsByUserId = async (req, res) => {
 const getPostById = async (req, res) => {
   //
   const { status, data } = await postService.getPostById(req.params.id);
-  res.status(httpStatus[status]).json([data]);
+  res.status(httpStatus[status]).json(data);
 };
 
 const updatePost = async (req, res) => {
