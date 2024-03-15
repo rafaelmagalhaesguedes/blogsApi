@@ -15,9 +15,16 @@ const userSchema = Joi.object({
   }),
 });
 
-const validateUser = (displayName, email, password, image) => {
+const validateUser = (req, res, next) => {
+  //
+  const { displayName, email, password, image } = req.body;
+
   const { error } = userSchema.validate({ displayName, email, password, image });
-  if (error) return { status: 'INVALID_FIELDS', data: { message: error.message } };
+  if (error) {
+    return res.status(400).json({ status: 'INVALID_VALUE', message: error.details[0].message });
+  }
+
+  next();
 };
 
 module.exports = { validateUser };
