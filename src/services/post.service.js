@@ -58,7 +58,7 @@ const updatePost = async (id, { title, content }, userId) => {
   }
 
   const postUpdated = await postRepository.update(id, { title, content }, userId);
-  
+
   if (!postUpdated) {
     return { status: 'INTERNAL_SERVER_ERROR', data: { message: 'Error on update post' } };
   }
@@ -68,7 +68,15 @@ const updatePost = async (id, { title, content }, userId) => {
 
 const deletePost = async (postId, userId) => {
   //
-  await blogRepository.validateUserToDeletePost(postId, userId);
+  const post = await postRepository.findById(postId);
+
+  if (!post) {
+    return { status: 'NOT_FOUND', data: { message: 'Post does not exist' } };
+  }
+  
+  if (post.userId !== userId) {
+    return { status: 'UNAUTHORIZED', data: { message: 'Unauthorized user' } };
+  }
 
   const { status, data } = await postRepository.destroy(postId);
   
