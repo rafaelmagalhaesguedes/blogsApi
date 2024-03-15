@@ -27,8 +27,24 @@ const findAll = async () => {
   return categories;
 };
 
+const checkCategoriesExist = async (categoryIds) => {
+  //
+  const { count } = await Category.findAndCountAll({
+    where: {
+      id: {
+        [Op.in]: categoryIds,
+      },
+    },
+  });
+  
+  const allCategoriesExist = count === categoryIds.length;
+
+  return allCategoriesExist;
+};
+
 module.exports = {
+  findAll,
   create,
   createPostCategory,
-  findAll,
+  checkCategoriesExist,
 };
