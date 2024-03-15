@@ -6,7 +6,7 @@ const postMiddleware = require('../middleware/post.middleware');
 const router = express.Router();
 
 // Route to create a new post
-router.post('/', postMiddleware.validatePost, authenticate, postController.createPost);
+router.post('/', postMiddleware.validatePostCreate, authenticate, postController.createPost);
 
 // Route to get all posts
 router.get('/', authenticate, postController.getAllPosts);
@@ -21,7 +21,7 @@ router.get('/user/:id', authenticate, postController.getPostsByUserId);
 router.get('/:id', authenticate, postController.getPostById);
 
 // Route to update a post
-router.put('/:id', postMiddleware.validatePost, authenticate, postController.updatePost);
+router.put('/:id', postMiddleware.validatePostUpdate, authenticate, postController.updatePost);
 
 // Route to delete a post
 router.delete('/:id', authenticate, postController.deletePost);
