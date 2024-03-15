@@ -1,11 +1,12 @@
 const express = require('express');
 const { userController } = require('../controllers');
 const { authenticate } = require('../middleware/auth.middleware');
+const { validateUser } = require('../middleware/user.middleware');
 
 const router = express.Router();
 
 // Route to create a new user
-router.post('/', userController.createUser);
+router.post('/', validateUser, userController.createUser);
 
 // Route to get all users
 router.get('/', authenticate, userController.getAllUsers);
