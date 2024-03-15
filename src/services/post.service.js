@@ -4,16 +4,17 @@ const { categoryRepository } = require('../repository');
 
 const createPost = async ({ title, content, categoryIds }, userId) => {
   //
-  const categories = await categoryRepository.validateCategory(categoryIds);
+  const categories = await categoryRepository.checkCategoriesExist(categoryIds);
   if (!categories) {
-    return { status: 'BAD_REQUEST', data: { message: 'One or more "categoryIds" not found' } };
+    return { status: 'INVALID_VALUE', data: { message: 'one or more "categoryIds" not found' } };
   }
 
   try {
     const newPost = await postRepository.create({ title, content, categoryIds, userId });
     return { status: 'CREATED', data: newPost };
   } catch (error) {
-    return { status: 'INTERNAL_SERVER_ERROR', data: { message: error.message } };
+    console.log(error.message);
+    return { status: 'INTERNAL_SERVER_ERROR', data: { message: 'Error an create a new post.' } };
   }
 };
 
