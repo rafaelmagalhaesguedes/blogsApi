@@ -24,6 +24,7 @@ const getAllPosts = async () => {
 };
 
 const getPostsByUserId = async (userId) => {
+  //
   const posts = await postRepository.findAllByUserId(userId);
 
   if (!posts) return { status: 'NOT_FOUND', data: { message: 'Posts does not exist' } };
@@ -32,6 +33,7 @@ const getPostsByUserId = async (userId) => {
 };
 
 const getPostById = async (id) => {
+  //
   const post = await postRepository.findById(id);
 
   if (!post) return { status: 'NOT_FOUND', data: { message: 'Post does not exist' } };
@@ -63,6 +65,7 @@ const deletePost = async (postId, userId) => {
 };
 
 const searchPosts = async (searchString) => {
+  //
   if (searchString === '') return getAllPosts();
   
   const searchResult = await postRepository.search(searchString);
