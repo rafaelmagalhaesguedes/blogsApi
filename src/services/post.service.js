@@ -1,10 +1,13 @@
-const { postValidate } = require('./validations');
-const { postRepository } = require('./repository');
+const { blogRepository } = require('../repository');
+const { postRepository } = require('../repository');
+const { categoryRepository } = require('../repository');
 
 const createPost = async ({ title, content, categoryIds }, userId) => {
   //
-  postValidate.validatePostBody({ title, content, categoryIds });
-  await postValidate.validateCategory(categoryIds);
+  const categories = await categoryRepository.validateCategory(categoryIds);
+  if (!categories) {
+    return { status: 'BAD_REQUEST', data: { message: 'One or more "categoryIds" not found' } };
+  }
 
   try {
     const newPost = await postRepository.create({ title, content, categoryIds, userId });
@@ -43,9 +46,15 @@ const getPostById = async (id) => {
 
 const updatePost = async (id, { title, content }, userId) => {
   //
-  postValidate.validatePostBody({ title, content, categoryIds: [] });
-  const post = await postValidate.checkPostExist(id);
-  postValidate.checkUserIsAuthor(post, userId);
+  const post = await blogRepository.checkPostExist(id);
+
+  if (!post) {
+    return { status: 'NOT_FOUND', data: { message: 'Post does not exist' } };
+  }
+  
+  if (post.userId !== userId) {
+    return { status: 'UNAUTHORIZED', data: { message: 'Unauthorized user' } };
+  }
 
   try {
     const postUpdated = await postRepository.update(id, { title, content }, userId);
@@ -57,7 +66,7 @@ const updatePost = async (id, { title, content }, userId) => {
 
 const deletePost = async (postId, userId) => {
   //
-  await postValidate.validateUserToDeletePost(postId, userId);
+  await blogRepository.validateUserToDeletePost(postId, userId);
 
   const { status, data } = await postRepository.destroy(postId);
   

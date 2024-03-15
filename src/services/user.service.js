@@ -1,10 +1,12 @@
-const { userRepository } = require('./repository');
-const { userValidate } = require('./validations');
+const { User } = require('../models');
+const { userRepository } = require('../repository');
 
 const createUser = async ({ displayName, email, password, image }) => {
   //
-  userValidate.validateUserBody(displayName, email, password, image);
-  await userValidate.validateUserByEmail(email);
+  const user = await User.findOne({ where: { email } });
+  if (user) {
+    return { status: 'CONFLICT', data: { message: 'User already registered' } };
+  }
 
   try {
     const token = await userRepository.create({ displayName, email, password, image });
